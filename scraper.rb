@@ -61,9 +61,7 @@ end
 #ScraperWiki.save_metadata('state', 'NSW')
 
 # Using Mechanize to grab the page because ScraperWiki.scrape bombed out on me
-agent = Mechanize.new do |a|
-  a.verify_mode = OpenSSL::SSL::VERIFY_NONE
-end
+agent = Mechanize.new
 
 doc = agent.get(starting_url)
 scrape_and_follow_next_link(doc, comment_url)
