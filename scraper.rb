@@ -39,7 +39,7 @@ end
 def scrape_and_follow_next_link(doc, comment_url)
   scrape_table(doc, comment_url)
   nextButton = doc.at('.rgPageNext')
-  unless nextButton['onclick'] =~ /return false/
+  if nextButton && !(nextButton['onclick'] =~ /return false/)
     form = doc.forms.first
     
     # The joy of dealing with ASP.NET
