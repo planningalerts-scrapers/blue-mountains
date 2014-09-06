@@ -15,13 +15,15 @@ def scrape_table(doc, comment_url)
     # Show  Number  Exhibit Start  Exhibit End  Details  Village
     tds = tr.search('td')
     h = tds.map{|td| td.inner_html}
-  
+
+    next if tds[0].at('a').nil?
+
     record = {
       'info_url' => (doc.uri + tds[0].at('a')['href']).to_s,
       'comment_url' => comment_url,
-      'council_reference' => clean_whitespace(h[1]),
-      'on_notice_from' => Date.strptime(clean_whitespace(h[2]),"%d/%m/%Y").to_s,
-      'on_notice_to' => Date.strptime(clean_whitespace(h[3]), "%d/%m/%Y").to_s,
+      'council_reference' => clean_whitespace(tds[0].at('a').text),
+      'on_notice_from' => Date.strptime(clean_whitespace(h[1]),"%d/%m/%Y").to_s,
+      'on_notice_to' => Date.strptime(clean_whitespace(h[2]), "%d/%m/%Y").to_s,
       'address' => clean_whitespace(h[4].split('<br>')[0]) + ", " + clean_whitespace(h[5]) + ", NSW",
       'description' => clean_whitespace(h[4].split('<br>')[1..-1].join),
       'date_scraped' => Date.today.to_s
