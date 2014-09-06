@@ -16,7 +16,11 @@ def scrape_table(doc, comment_url)
     tds = tr.search('td')
     h = tds.map{|td| td.inner_html}
 
-    next if tds[0].at('a').nil?
+    header_row = tds[0].at('a').nil?
+    if header_row
+      puts "Skipping header row"
+    end
+    next if header_row
 
     record = {
       'info_url' => (doc.uri + tds[0].at('a')['href']).to_s,
@@ -24,8 +28,8 @@ def scrape_table(doc, comment_url)
       'council_reference' => clean_whitespace(tds[0].at('a').text),
       'on_notice_from' => Date.strptime(clean_whitespace(h[1]),"%d/%m/%Y").to_s,
       'on_notice_to' => Date.strptime(clean_whitespace(h[2]), "%d/%m/%Y").to_s,
-      'address' => clean_whitespace(h[4].split('<br>')[0]) + ", " + clean_whitespace(h[5]) + ", NSW",
-      'description' => clean_whitespace(h[4].split('<br>')[1..-1].join),
+      'address' => clean_whitespace(h[3].split('<br>')[0]) + ", " + clean_whitespace(h[4]) + ", NSW",
+      'description' => clean_whitespace(h[3].split('<br>')[1..-1].join),
       'date_scraped' => Date.today.to_s
     }
 
