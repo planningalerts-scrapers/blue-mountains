@@ -28,12 +28,12 @@ def scrape_table(doc, comment_url)
       'council_reference' => clean_whitespace(tds[0].at('a').text),
       'on_notice_from' => Date.strptime(clean_whitespace(h[1]),"%d/%m/%Y").to_s,
       'on_notice_to' => Date.strptime(clean_whitespace(h[2]), "%d/%m/%Y").to_s,
-      'address' => clean_whitespace(h[3].split('<br>')[0]) + ", " + clean_whitespace(h[4]) + ", NSW",
+      'address' => clean_whitespace(h[3].split('<br>')[0].sub("<strong>", "").sub("</strong>", "")) + ", " + clean_whitespace(h[4]) + ", NSW",
       'description' => clean_whitespace(h[3].split('<br>')[1..-1].join),
       'date_scraped' => Date.today.to_s
     }
 
-    #p record
+    puts record.to_yaml
     if ((ScraperWiki.select("* from data where `council_reference`='#{record['council_reference']}'").empty?) rescue true)
       ScraperWiki.save_sqlite(['council_reference'], record)
     else
