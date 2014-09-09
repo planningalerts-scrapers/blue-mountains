@@ -29,7 +29,7 @@ def scrape_table(doc, comment_url)
       'on_notice_from' => Date.strptime(clean_whitespace(h[1]),"%d/%m/%Y").to_s,
       'on_notice_to' => Date.strptime(clean_whitespace(h[2]), "%d/%m/%Y").to_s,
       'address' => clean_whitespace(h[3].split('<br>')[0].sub("<strong>", "").sub("</strong>", "")) + ", " + clean_whitespace(h[4]) + ", NSW",
-      'description' => clean_whitespace(h[3].split('<br>')[1..-1].join),
+      'description' => clean_whitespace(h[3].split('<br>')[1..-1].join).capitalize,
       'date_scraped' => Date.today.to_s
     }
 
