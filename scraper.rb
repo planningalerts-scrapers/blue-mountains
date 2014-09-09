@@ -33,7 +33,6 @@ def scrape_table(doc, comment_url)
       'date_scraped' => Date.today.to_s
     }
 
-    puts record.to_yaml
     if ((ScraperWiki.select("* from data where `council_reference`='#{record['council_reference']}'").empty?) rescue true)
       ScraperWiki.save_sqlite(['council_reference'], record)
     else
