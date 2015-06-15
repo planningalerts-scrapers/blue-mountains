@@ -69,5 +69,10 @@ end
 agent = Mechanize.new
 
 doc = agent.get(starting_url)
+form = doc.forms.first
+button = form.button_with(value: "I Agree")
+raise "Can't find agree button" if button.nil?
+doc = form.submit(button)
+doc = agent.get(starting_url)
 scrape_and_follow_next_link(doc, comment_url)
 
