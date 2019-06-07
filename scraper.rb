@@ -1,7 +1,4 @@
-# require 'scraperwiki'
-require 'mechanize'
-
-require File.dirname(__FILE__) + '/lib_icon_rest_xml/scraper'
+require "icon_scraper"
 
 starting_url = "https://www2.bmcc.nsw.gov.au/DATracking/Pages/XC.Track/SearchApplication.aspx"
 
@@ -26,4 +23,4 @@ button = form.button_with(value: "I Agree")
 raise "Can't find agree button" if button.nil?
 doc = form.submit(button)
 
-scrape_icon_rest_xml(starting_url, "d=" + period + "&k=LodgementDate&o=xml", false, agent)
+IconScraper.rest_xml(starting_url, "d=" + period + "&k=LodgementDate&o=xml", false, agent)
